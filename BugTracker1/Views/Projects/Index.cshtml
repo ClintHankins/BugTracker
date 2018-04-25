@@ -1,0 +1,74 @@
+﻿@model IEnumerable<BugTracker1.Models.Projects>
+
+
+@if (User.IsInRole("Admin"))
+{
+    @Html.ActionLink("Create", "Tickets")
+}
+
+<div class="row-fluid sortable">
+    <div class="box span11">
+        <div class="box-header" data-original-title>
+            <h2><i class="halflings-icon white user"></i><span class="break"></span>Project Table</h2>
+            <div class="box-icon">
+                <a href="#" class="btn-setting"><i class="halflings-icon white wrench"></i></a>
+                <a href="#" class="btn-minimize"><i class="halflings-icon white chevron-up"></i></a>
+                <a href="#" class="btn-close"><i class="halflings-icon white remove"></i></a>
+            </div>
+        </div>
+        <div class="box-content">
+            <table class="table table-striped table-bordered bootstrap-datatable datatable">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayName("Title of Project")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Assigned To")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Tickets in Project")
+                        </th>
+                        @*<th>
+                                @Html.DisplayName("Created")
+                            </th>*@
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="center">@Html.DisplayFor(modelItem => item.Name)</td>
+                            <td>
+                                @foreach (var user in item.Users)
+                                {
+                                    <div>@user.FirstName @user.LastName</div>
+                                }
+                            </td>
+                            @*If <th> is removed, remove the corresponding <td> underneath or your styling will mess up (works the same vice-versa).*@
+                            <td class="center"></td>
+                            <td class="right">
+                                <a class="btn btn-success" href="@Url.Action("Details", "Projects", new { id = item.Id })">
+                                    <i class="halflings-icon white zoom-in"></i>
+                                </a>
+                                <a class="btn btn-info" href="@Url.Action("Edit", "Projects", new { id = item.Id })">
+                                    <i class="halflings-icon white edit"></i>
+                                </a>
+                                <a class="btn btn-danger" href="@Url.Action("Delete", "Projects", new { id = item.Id })">
+                                    <i class="halflings-icon white trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+
+                    }
+            </table>
+        </div>
+    </div><!--/span-->
+
+</div><!--/row-->
+
+@section Scripts{
+
+}

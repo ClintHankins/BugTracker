@@ -1,0 +1,43 @@
+﻿@model IEnumerable<BugTracker1.Models.Projects>
+@{
+    ViewBag.Title = "MyProjects";
+}
+
+<h2>MyProjects</h2>
+
+@if (User.IsInRole("Submitter"))
+{
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+}
+@foreach (var item in Model)
+{
+
+    @*<p>
+            @Html.DisplayNameFor(model => model.Name)
+        </p>*@
+    <p>
+        @Html.DisplayFor(modelItem => item.Name)
+    </p>
+    <p>
+        <ul>
+            @foreach (var usr in item.Users)
+            {
+                <li> @usr.FirstName @usr.LastName</li>
+            }
+        </ul>
+        <ul>
+            @foreach (var tic in item.Ticket)
+            {
+                <li> @tic.Title </li>
+            }
+        </ul>
+    </p>
+
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+    </p>
+}

@@ -1,0 +1,86 @@
+﻿@model IEnumerable<BugTracker1.Models.Tickets>
+
+
+<div class="row-fluid sortable">
+    <div class="box span11">
+        <div class="box-header" data-original-title>
+            <h2><i class="halflings-icon white user"></i><span class="break"></span>Ticket Table</h2>
+            <div class="box-icon">
+                <a href="#" class="btn-setting"><i class="halflings-icon white wrench"></i></a>
+                <a href="#" class="btn-minimize"><i class="halflings-icon white chevron-up"></i></a>
+                <a href="#" class="btn-close"><i class="halflings-icon white remove"></i></a>
+            </div>
+        </div>
+        <div class="box-content">
+            <table class="table table-striped table-bordered bootstrap-datatable datatable">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayName("Assigned To")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Ticket Owner")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Project")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Priority")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Status")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Type")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Title")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Desription")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Created")
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="center"> @item.AssignedToUser.FirstName</td>
+                        <td class="center">@item.OwnerUser.FirstName</td>
+                        <td class="center">@item.Projects.Name</td>
+                        <td class="center">
+                            <span class="label label-danger">@item.TicketPriority.Name</span>
+                        </td>
+                        <td class="center">@item.TicketStatus.Name</td>
+                        <td class="center">@item.TicketType.Name</td>
+                        <td class="center">@item.Title</td>
+                        <td class="center">@item.Description</td>
+                        <td class="center">@item.Created</td>
+                        <td class="center">
+                            <a class="btn btn-success" href="@Url.Action("Details", "Tickets", new { id = item.Id })">
+                                <i class="halflings-icon white zoom-in"></i>
+                            </a>
+                            <a class="btn btn-info" href="@Url.Action("Edit", "Tickets", new { id = item.Id })">
+                                <i class="halflings-icon white edit"></i>
+                            </a>
+                            <a class="btn btn-danger" href="@Url.Action("Delete", "Tickets", new { id = item.Id })">
+                                <i class="halflings-icon white trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+            }
+            </table>
+        </div>
+
+    </div><!--/span-->
+
+</div><!--/row-->
+
+@section Scripts{
+
+}

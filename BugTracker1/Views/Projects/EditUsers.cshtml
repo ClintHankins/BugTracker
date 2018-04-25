@@ -1,0 +1,22 @@
+﻿@model BugTracker1.Models.ProjectUsersViewModel
+
+
+<h2>Assign Project Manager to project</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model => model.Project.Id)
+    <div>
+        <div class="form-group">
+            <p>
+                Edit Developers for @Html.DisplayFor(model => model.Project.Id)
+            </p>
+            <p>
+                @Html.ListBox("SelectedUsers", Model.Users)
+            </p>
+            <p>
+                <input type="submit" value="Update Project Manager" class="btn btn-default" />
+            </p>
+        </div>
+    </div>
+}

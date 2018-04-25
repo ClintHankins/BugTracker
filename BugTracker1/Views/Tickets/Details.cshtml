@@ -1,0 +1,220 @@
+﻿@model BugTracker1.Models.Tickets
+
+<div>
+    <h1>@Html.DisplayFor(model => model.Title)</h1>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AssignedToUser)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AssignedToUser.FullName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OwnerUser)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OwnerUser.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Projects)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Projects.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TicketPriority)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TicketPriority.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TicketStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TicketStatus.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TicketType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TicketType.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Created)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Created)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Updated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Updated)
+        </dd>
+
+    </dl>
+</div>
+
+<div>
+    <p>
+        @Html.ActionLink("Delete", "Delete", new { id = Model.Id }) |
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</div>
+<div class=" content">
+
+    <div id="London" class="tabcontent">
+        <h1 style="text-align-last:center">Comments</h1>
+        @foreach (var comment in Model.Comments.OrderByDescending(c => c.Created))
+        {
+            if (comment != null)
+            {
+                <div class="box-content" style="width:750px; color:black; outline-style:ridge;">
+                    <div class="align-left"><small>Posted By <b>@comment.User.FullName</b> on @comment.Created.ToString("MMM, dd, yyyy | h:mm tt")</small></div>
+                    <div>@comment.Comment</div>
+                    <br />
+                    <br />
+                </div>
+                        if (User.IsInRole("Admin"))
+                        {
+                        <div>
+                            @Html.ActionLink("Edit", "Edit", "TicketComments", new { id = comment.Id }, null) <span> | </span>
+                            @Html.ActionLink("Delete", "Delete", "TicketComments", new { id = comment.Id }, null)
+                        </div>
+                        }
+                <br />
+            }
+        }
+
+        <div>
+            @using (Html.BeginForm("Create", "TicketComments", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.Hidden("TicketId", Model.Id)
+                @*<input id="Body" name="Comment" type="text" />*@
+
+                <textarea name="Description"  placeholder="Comment..." ></textarea>
+            }
+        </div>
+                <input type="submit" class="btn" placeholder="Submit" />
+    </div>
+
+    <div id="Paris" class="tabcontent">
+        <h1>Attachments</h1>
+        <div class="box box-widget">
+            <div style="height: 300px; overflow-y:scroll;">
+                @foreach (var attachment in Model.Attachments.OrderByDescending(c => c.Created))
+                {
+
+                <div class="box-body">
+                    <div class="align-left" style="color:black;"><small>Posted By <b>@attachment.User.FullName</b> on @attachment.Created.ToString("MMM, dd, yyyy | h:mm tt")</small></div>
+                    <div>@attachment.Description</div>
+                    @if (!String.IsNullOrEmpty(attachment.FileUrl))
+    {
+                <img class="img-responsive pad" src=@attachment.FileUrl style="height:175px; width: 250px; padding-left:10px; padding-top:10px;">
+}
+
+                    @if (User.IsInRole("Admin"))
+    {
+                <button type="button" class="btn btn-default btn-xs">
+                    @Html.ActionLink("Edit  ", "Edit", "TicketAttachments", new { id = attachment.Id }, null)
+                </button>
+                <button type="button" class="btn btn-default btn-xs">
+                    @Html.ActionLink("Delete", "Delete", "TicketAttachments", new { id = attachment.Id }, null)
+                </button>
+}
+                </div>
+                }
+            </div>
+            @using (Html.BeginForm("Create", "TicketAttachments", FormMethod.Post, new { enctype = "Multipart/form-data" }))
+            {
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.Hidden("TicketId", Model.Id)
+                    <hr />
+                    <div class="box-footer">
+                        <form action="#" method="post">
+                            <div class="img-push" style="padding-left:10px; padding-top:10px; position:sticky;">
+                                <div class="input-group">
+                                    <span class="input-group-addon" style="color:green;">Add Attachments Here</span>
+                                    <input type="file" class="form-control input-sm" name="file" />
+                                </div>
+                                <input class="btn-flat btn-primary" type="submit" value="Submit">
+                            </div>
+                        </form>
+                    </div>
+                }
+
+            }
+        </div>
+    </div>
+
+    <div id="Tokyo" class="tabcontent">
+        <h1>History</h1>
+        <div style="height: 350px; overflow-y:scroll; overflow-x:hidden;">
+            @foreach (var item in Model.History)
+            {
+                <div class="noMarginLeft">
+
+                    <div class="dark" id="ticketDetails_Dark">
+
+                        <div class="timeline">
+
+                            <div class="timeslot">
+
+                                <div class="task" style="height:0px;">
+                                    <span>
+                                        <span class="type">Update</span>
+                                        <span class="details">
+                                            <p> Title- @Html.DisplayFor(modelItem => item.Ticket.Title)            </p>
+                                            <p> Property- @Html.DisplayFor(modelItem => item.Property)                 </p>
+                                            <p>Old Value-  @Html.DisplayFor(modelItem => item.OldValue)                </p>
+                                            <p>New Value-  @Html.DisplayFor(modelItem => item.NewValue)              </p>
+                                            <p>Updated By-  @Html.DisplayFor(modelItem => item.User.FirstName)      </p>
+                                        </span>
+                                    </span>
+                                    @*<div class="arrow"></div>*@
+                                </div>
+                                <div class="icon">
+                                    <i class="icon-map-marker"></i>
+                                </div>
+                                <div class="time">
+                                    @Html.DisplayFor(modelItem => item.Changed)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <button class="tablink" onclick="openCity('London', this, 'red')" id="defaultOpen">Comments</button>
+    <button class="tablink" onclick="openCity('Paris', this, 'green')">Attachments</button>
+    <button class="tablink" onclick="openCity('Tokyo', this, 'blue')">History</button>
+</div>

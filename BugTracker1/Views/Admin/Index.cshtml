@@ -1,0 +1,16 @@
+﻿@model IEnumerable<BugTracker1.Models.AdminIndexViewModel>
+
+<h2>Change User Roles</h2>
+
+@foreach(var mod in Model)
+{
+    <p>@mod.User.FirstName @mod.User.LastName | @Html.ActionLink("Edit Roles", "EditUser", new { id = mod.User.Id })</p>
+    <ul>
+        @foreach (var role in mod.Roles)
+        {
+        <li>
+            @role
+        </li>
+        }
+    </ul>
+}

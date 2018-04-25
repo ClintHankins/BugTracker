@@ -1,0 +1,50 @@
+﻿@model BugTracker1.Models.Projects
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h1>Edit Projects</h1>
+<p>@Html.ActionLink("Edit Users" , "EditUsers", new { id = Model.Id })</p>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Projects</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" style="padding-bottom:50px">
+            @Html.LabelFor(model => model.ProjectMangerId, "Project Manager", htmlAttributes: new { @class = "control-label"})
+            <div>
+                @Html.DropDownList("ProjectManagerId", null, htmlAttributes: new { @class = "form-label"})
+                @Html.ValidationMessageFor(model => model.ProjectMangerId, "", new { @class = "text-danger"})
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
